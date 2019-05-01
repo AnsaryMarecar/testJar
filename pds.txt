@@ -1,0 +1,62 @@
+package controler;
+import java.net.ServerSocket;
+import java.sql.Connection;
+
+import controler.DataSource;
+import controler.JDBCConnectionPool;
+
+public class Serve implements Runnable {
+	
+	public Serve() {
+		
+	}
+	static Connection	to_return;
+	public static void serverAcceptor(String s) {
+		DataSource 			ds 	=	new DataSource();
+		ds.fillCon();
+		try {
+		if (JDBCConnectionPool.connex.isEmpty() != true ) {
+	
+	 to_return = DataSource.returnConex();
+			System.out.println(to_return);
+			requestHardler();
+		}
+		
+		else {
+			System.out.println("Don't have anny connection to give ");
+		}
+		} catch (Exception e ) {
+			
+		}
+		
+	}
+	public synchronized static void requestHardler( ) {
+		
+		Thread t = new Thread(new Serve());
+		System.out.println("Thread cree");
+		t.start();	
+		
+}
+
+public  void  run() {
+	System.out.println("test");
+	System.out.println(to_return);
+	
+}
+
+}
+
+
+
+import controler.Serve;
+
+public class Main2 {
+	
+	
+	public static void main(String [] args) {
+		Serve s= new Serve();
+	
+		s.serverAcceptor("hjhj");
+		
+	}
+}
